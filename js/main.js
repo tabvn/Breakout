@@ -5,6 +5,7 @@ var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
 var ballRadius = 10;
+var ballColor = "#0095DD";
 var paddleHeight = 10;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth) / 2;
@@ -76,10 +77,17 @@ function collisionDetection() {
     }
 }
 
+function getRandomColor() {
+    var r = 255*Math.random()|0,
+        g = 255*Math.random()|0,
+        b = 255*Math.random()|0;
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = ballColor;
     ctx.fill();
     ctx.closePath();
 }
@@ -124,15 +132,16 @@ function drawLives() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
     drawBall();
     drawPaddle();
-    drawBricks();
     drawScore();
     drawLives();
     collisionDetection();
 
     if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
+        ballColor = getRandomColor();
     }
 
     if (y + dy < ballRadius) {
@@ -144,17 +153,17 @@ function draw() {
         }
         else {
             lives--;
-        if (!lives) {
-            alert("GAME OVER");
-            document.location.reload();
-        }
-        else {
-            x = canvas.width/2;
-            y = canvas.height-30;
-            dx = 2;
-            dy = -2;
-            paddleX = (canvas.width-paddleWidth)/2;
-        }
+            if (!lives) {
+                alert("GAME OVER");
+                document.location.reload();
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
         }
     }
     
