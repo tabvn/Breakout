@@ -39,7 +39,7 @@ document.addEventListener("touchmove", touchMoveHandler, false);
 function touchMoveHandler(e){
     for (var i=0; i<e.touches.length; i++){
         var relativeX = e.touches[i].clientX - canvas.offsetLeft;
-        if (relativeX > 0 && relativeX < canvas.width)
+        if (relativeX >= paddleWidth/2 && relativeX <= canvas.width-paddleWidth/2)
             paddleX = relativeX-paddleWidth/2;
     }
 }
