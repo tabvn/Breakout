@@ -35,7 +35,7 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 
 function mouseMoveHandler(e) {
     var relativeX = e.clientX - canvas.offsetLeft;
-    if (relativeX > 0 && relativeX < canvas.width) {
+    if (relativeX >= paddleWidth/2 && relativeX <= canvas.width-paddleWidth/2) {
         paddleX = relativeX - paddleWidth/2;
     }
 }
@@ -68,7 +68,7 @@ function collisionDetection() {
                     b.status = 0;
                     score++;
                     if (score == brickRowCount*brickColumnCount) {
-                        alert("YOU WIN, CONGRATULATIONS!");
+                        alert("YOU WIN, CONGRATULATIONS!" + "\n" + "YOU GOT " + score + " SCORE!");
                         document.location.reload();
                     }
                 }
