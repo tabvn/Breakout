@@ -7,7 +7,7 @@ var dy = -2;
 var ballRadius = 10;
 var ballColor = "#0095DD";
 var brickColor = "#0095DD"
-var paddleHeight = 10;
+var paddleHeight = 20;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth) / 2;
 var rightPressed = false;
@@ -160,11 +160,16 @@ function draw() {
     if (y + dy < ballRadius) {
         dy = -dy;
     } 
-    else if (y + dy > canvas.height-ballRadius) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-        }
-        else {
+    
+    if (y > canvas.height - ballRadius - paddleHeight &&
+            y < canvas.height - ballRadius &&
+            x + ballRadius > paddleX &&
+            x - ballRadius < paddleX + paddleWidth) {
+                dy = -dy;
+                console.log("BALL TOUCH PADDLE");
+            }
+    if (y + dy > canvas.height - ballRadius) {
+            console.log("BALL FALL OUT");
             lives--;
             if (!lives) {
                 alert("GAME OVER");
@@ -177,7 +182,6 @@ function draw() {
                 dy = -2;
                 paddleX = (canvas.width-paddleWidth)/2;
             }
-        }
     }
     
     if (rightPressed && paddleX < canvas.width-paddleWidth) {
