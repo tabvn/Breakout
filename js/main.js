@@ -6,7 +6,8 @@ var dx = 2;
 var dy = -2;
 var ballRadius = 10;
 var ballColor = "#0095DD";
-var paddleHeight = 10;
+var brickColor = "#0095DD"
+var paddleHeight = 20;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth) / 2;
 var rightPressed = false;
@@ -25,7 +26,8 @@ var bricks = [];
 for (var c=0; c<brickColumnCount; c++) {
     bricks[c] = [];
     for (var r=0; r<brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0, status: 1 };
+        brickColor = getRandomColor();
+        bricks[c][r] = { x: 0, y: 0, color: brickColor, status: 1 };
     }
 }
 
@@ -110,7 +112,7 @@ function drawBricks() {
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
+                ctx.fillStyle = bricks[c][r].color;
                 ctx.fill();
                 ctx.closePath();
             }
@@ -144,7 +146,9 @@ function draw() {
         ballColor = getRandomColor();
     }
 
-    if (y + dy < ballRadius) {
+    // paddleY = canvas.height-paddleHeight;
+
+    if (y + dy < ballRadius || y > canvas.height-paddleHeight-ballRadius) {
         dy = -dy;
     } 
     else if (y + dy > canvas.height-ballRadius) {
