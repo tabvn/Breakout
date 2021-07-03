@@ -7,7 +7,7 @@ var dy = -2;
 var ballRadius = 10;
 var ballColor = "#0095DD";
 var brickColor = "#0095DD"
-var paddleHeight = 20;
+var paddleHeight = 10;
 var paddleWidth = 75;
 var paddleX = (canvas.width-paddleWidth) / 2;
 var rightPressed = false;
@@ -148,7 +148,7 @@ function draw() {
 
     // paddleY = canvas.height-paddleHeight;
 
-    if (y + dy < ballRadius || y > canvas.height-paddleHeight-ballRadius) {
+    if (y + dy < ballRadius) {
         dy = -dy;
     } 
     else if (y + dy > canvas.height-ballRadius) {
