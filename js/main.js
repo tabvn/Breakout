@@ -2,8 +2,8 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var x = canvas.width/2;
 var y = canvas.height-30;
-var dx = 2;
-var dy = -2;
+var dx = 10;
+var dy = -10;
 var ballRadius = 10;
 var ballColor = "#0095DD";
 var brickColor = "#0095DD"
@@ -23,6 +23,14 @@ var score = 0;
 var lives = 3;
 var circle = {cx: 0, cy: 0, cr: 0};
 var rect = {x: 0, y: 0, w: 0, h: 0};
+var fps = 60;
+var fpsInterval = 1000 / fps;
+var then = Date.now();
+var startTime = then;
+var delta = 30;
+var now;
+var deltaX = dx * (delta/100);
+var deltaY = dy * (delta/100);
 
 var bricks = [];
 for (var c=0; c<brickColumnCount; c++) {
@@ -81,15 +89,15 @@ function RectCircleColliding(circle, rect){
     if (distX <= (rect.w/2)) { return true; } 
     if (distY <= (rect.h/2)) { return true; }
 
-    var dx=distX-rect.w/2;
-    var dy=distY-rect.h/2;
+    var dxx = distX - rect.w/2;
+    var dyy = distY - rect.h/2;
     
-    return (dx*dx+dy*dy<=(circle.cr*circle.cr));
+    return (dxx*dxx + dyy*dyy <= (circle.cr*circle.cr));
 }
 
 function collisionDetection() {
-    circle.cx = x;
-    circle.cy = y;
+    circle.cx = x + deltaX;
+    circle.cy = y + deltaY;
     circle.cr = ballRadius;
 
     for (var c=0; c<brickColumnCount; c++) {
@@ -113,14 +121,14 @@ function collisionDetection() {
         }
     }
 
-    if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+    if (x + deltaX > canvas.width-ballRadius || x + deltaX < ballRadius) {
         dx = -dx;
         ballColor = getRandomColor();
     }
 
     // paddleY = canvas.height-paddleHeight;
 
-    if (y + dy < ballRadius) {
+    if (y + deltaY < ballRadius) {
         dy = -dy;
     } 
 
@@ -142,7 +150,7 @@ function collisionDetection() {
         console.log("BALL TOUCH PADDLE");
     }  
 
-    if (y + dy > canvas.height - ballRadius) {
+    if (y + deltaY  > canvas.height - ballRadius) {
         console.log("BALL FALL OUT");
         lives--;
         if (!lives) {
@@ -152,8 +160,8 @@ function collisionDetection() {
         else {
             x = canvas.width/2;
             y = canvas.height-30;
-            dx = 2;
-            dy = -2;
+            dx = 10;
+            dy = -10;
             paddleX = (canvas.width-paddleWidth)/2;
         }
     }
@@ -165,8 +173,8 @@ function collisionDetection() {
         paddleX -= 7;
     }
 
-    x += dx;
-    y += dy;
+   // x += dx * (delta / 100);
+   // y += dy * (delta / 100);
 }
 
 function getRandomColor() {
@@ -230,7 +238,22 @@ function draw() {
     drawScore();
     drawLives();
     collisionDetection();
+    
+
+    deltaX = dx * (delta /100);
+    deltaY = dy * (delta /100);
+    x += deltaX;
+    y += deltaY;
+
     requestAnimationFrame(draw);
+
+    now = Date.now();
+    delta = now - then;
+    
+    if (delta > fpsInterval) {
+        then = now - (delta % fpsInterval);
+    }
+    else delta = 0;
 }
 
 draw();
