@@ -171,7 +171,7 @@ function collisionDetection() {
         console.log("BALL FALL OUT");
         lives--;
         if (!lives) {
-            alert("GAME OVER" + "\ln" + "YOUR SCORE: " + scoreTotal);
+            alert("GAME OVER" + "\n" + "YOUR SCORE: " + scoreTotal);
             document.location.reload();
         }
         else {
